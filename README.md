@@ -83,7 +83,7 @@ To obtain the dataset, please sign the [agreement](agreement.pdf), scan and send
 
 ### Citation
 
-If you use this dataset, please cite the following paper [PDF](https://ieeexplore.ieee.org/abstract/document/9793363):
+If you use this dataset, please cite the following paper [RFMask](https://ieeexplore.ieee.org/abstract/document/9793363) [RFGAN](https://ieeexplore.ieee.org/abstract/document/9720242) [DIGesture](https://arxiv.org/abs/2111.06195):
 
 ```text
 @ARTICLE{9793363,
@@ -95,4 +95,23 @@ If you use this dataset, please cite the following paper [PDF](https://ieeexplor
   number={},
   pages={1-12},
   doi={10.1109/TMM.2022.3181455}}
+
+@misc{DIGesture,
+  title={Towards Domain-Independent and Real-Time Gesture Recognition Using mmWave Signal},
+  author={Yadong Li and Dongheng Zhang and Jinbo Chen and Jinwei Wan and Dong Zhang and Yang Hu and Qibin Sun and Yan Chen},
+  year={2021},
+  eprint={2111.06195},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+  }
+
+@ARTICLE{9720242,
+  author={Yu, Cong and Wu, Zhi and Zhang, Dongheng and Lu, Zhi and Hu, Yang and Chen, Yan},
+  journal={IEEE Transactions on Multimedia}, 
+  title={RFGAN: RF-Based Human Synthesis}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/TMM.2022.3153136}}
 ```
