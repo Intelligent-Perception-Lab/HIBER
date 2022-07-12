@@ -33,6 +33,11 @@ Under these settings the radar achieves a frame rate of **20fps**, a range resol
 
 ### Data preprocessing
 
+<div align='center'>
+    <img src="images/data_relationship.jpg"  height=320>
+</div>
+As depicted in the above figure, two FMCW radars are placed perpendicular to each other to collect RF signals from horizontal and vertical plane, respectively.
+
 The raw signals are processed into RF heatmaps based on AoA-ToF (Angle of Arrival, Time of Flight) and beamforming technology, and the subtraction between adjacent frames is adopted to eliminate static object reflections in the environment and amplify the dynamic reflections.
 
 ![hor_grid](images/data_grid.jpg)
