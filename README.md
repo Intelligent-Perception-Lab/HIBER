@@ -79,7 +79,7 @@ The following figure shows the statistical result of our HIBER dataset. Our data
 
 ### How to access the HIBER dataset
 
-To obtain the dataset, please sign the [agreement](agreement.pdf), scan and send it to wzwyyx@mail.ustc.edu.cn. Then you will receive a notification email that includes the download links of the dataset within seven days.
+To obtain the dataset, please sign the [agreement](agreement.pdf) which should be stamped with the official seal of your institution, then scan and send it to wzwyyx@mail.ustc.edu.cn. Then you will receive a notification email that includes the download links of the dataset within seven days.
 
 ### Citation
 
@@ -119,3 +119,7 @@ You may also be interested in the gesture recognition dataset and the following 
   primaryClass={cs.CV}
   }
 ```
+
+### Related Repos
+
+- [cross_domain_gesture_dataset](https://github.com/DI-HGR/cross_domain_gesture_dataset)
