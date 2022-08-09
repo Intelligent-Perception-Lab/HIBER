@@ -19,7 +19,7 @@ setuptools.setup(
     description='Tools of HIBER Dataset',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/wuzhiwyyx/HIBER/tree/package/HIBERTools',
+    url='https://github.com/wuzhiwyyx/HIBER/tree/main/HIBERTools',
     project_urls = {
         "Bug Tracker": "https://github.com/wuzhiwyyx/HIBER/issues"
     },
