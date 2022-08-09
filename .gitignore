@@ -22,3 +22,6 @@ temp*
 test*
 
 .vscode
+
+*lmdb*
+HIBERTools/HIBERTools/__pycache__

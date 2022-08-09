@@ -10,12 +10,15 @@ import os
 import json
 import numpy as np
 from itertools import product
+import lmdb
+from tqdm import tqdm
+
 
 class HIBERDataset():
     """HIBER dataset load and visualize object"""
 
     def __init__(self, root, subsets=['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']) -> None:
-        """HIBERDataset constructor
+        """HIBERDataset constructor.
 
         Args:
             root (str): Root path of HIBER dataset directory.
@@ -30,6 +33,7 @@ class HIBERDataset():
         self.fpg = 590 # number of frames per group
         self.__statistics__()
         self.datas, self.cates = self.__prepare_data__() # index of data items and categories
+        self.total_keys = None # lmdb data keys
 
     def __statistics__(self):
         """HIBERDataset statistics information, containing group lists of each subset and group lists of detailed subcategories.
@@ -209,7 +213,6 @@ class HIBERDataset():
             Tuple(np.ndarray, ..., np.ndarray): Data item and corresponding annotations, [hor, ver, pose2d, pose3d, hbox, vbox, silhouette].
         """
         v, g, f = self.datas[index]
-        print(v, g, f)
         subset = [x for x in self.subsets if x.startswith(self.cates[index])][0]
         prefix = os.path.join(self.root, subset)
         hor = os.path.join(prefix, 'HORIZONTAL_HEATMAPS', '%02d_%02d' % (v, g), '%04d.npy' % f)
@@ -226,5 +229,50 @@ class HIBERDataset():
         silhouette = np.load(silhouette)
         return hor, ver, pose2d, pose3d, hbox, vbox, silhouette
 
+    def save_as_lmdb(self, out_path):
+        """Save dataset as lmdb format.
+
+        Args:
+            out_path (str): Ouput file path.
+        """
+        assert self.__len__() != 0, 'At least one subset should be assigned.'
+        data_item = self.__getitem__(0)
+        total_samples = self.__len__()
+
+        instance_byte = sum([x.nbytes for x in data_item]) * total_samples
+        env = lmdb.open(out_path, map_size=instance_byte * 2)
+        txn = env.begin(write=True)
+
+        total_keys = self.get_lmdb_keys()
+
+        for i in tqdm(range(total_samples)):
+            data_item = self.__getitem__(i)
+            keys = total_keys[i]
+            for d, k in zip(data_item, keys):
+                txn.put(k.encode('ascii'), d)
+            txn.commit()
+            txn = env.begin(write=True)
+        env.close()
+
+    def get_lmdb_keys(self, regenerate=False):
+        """Return lmdb keys for loading from lmdb format.
+
+        Args:
+            regenerate (bool, optional): Whether to recalculate keys. Defaults to False.
+
+        Returns:
+            list: list of sample keys, each element contains 7 keys.
+        """
+        if self.total_keys is None or regenerate:
+            prefixes = ['h_', 'v_', 'p2d_', 'p3d_', 'hb_', 'vb_', 'm_']
+            total_keys = []
+            for i in range(self.__len__()):
+                v, g, f = self.datas[i]
+                keys = [x + '%02d_%02d_%04d' % (v, g, f) for x in prefixes]
+                total_keys.append(keys)
+            self.total_keys = total_keys
+        else:
+            total_keys = self.total_keys
+        return total_keys
 
 
