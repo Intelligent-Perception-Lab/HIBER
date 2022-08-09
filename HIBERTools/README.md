@@ -152,7 +152,7 @@ seq = random.randint(0, len(dataset) - 1)
 data_item = dataset[seq]
 hiber.visualize(data_item, 'result.jpg')
 ```
-You will get the visualized result saved in result.jpg in current folder. 
+You will get the visualized result saved as result.jpg in current folder. 
 ![Visualize data](../images/vis_data.jpg)
 Or you can plot the results directly by not passing output file name.
 ```py
