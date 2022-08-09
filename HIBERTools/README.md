@@ -102,7 +102,7 @@ pip install git+https://github.com/wuzhiwyyx/HIBER.git@main#subdirectory=HIBERTo
 
 ## Usage
 
-### Create dataset object and demonstrate statistics
+### 1. Create dataset object and show statistics
 ```py
 import HIBERTools as hiber
 
@@ -143,7 +143,7 @@ If you want to know precise group list of each detailed categories, please acces
 }
 ```
 
-### Visualize data
+### 2. Visualize data
 
 ```text
 import random
@@ -159,13 +159,13 @@ Or you can plot the results directly by not passing output file name.
 hiber.visualize(data_item)
 ```
 
-### Save as LMDB
+### 3. Save as LMDB
 
 ```py
 dataset.save_as_lmdb('hiber.lmdb')
 ```
 
-### Load from LMDB
+### 4. Load from LMDB
 
 ```py
 keys = dataset.get_lmdb_keys()
