@@ -25,5 +25,5 @@ setuptools.setup(
     },
     license='MIT',
     packages=['HIBERTools'],
-    install_requires=['requests'],
+    install_requires=['numpy', 'lmdb', 'tqdm', 'opencv-python', 'matplotlib'],
 )
