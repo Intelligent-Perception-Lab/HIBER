@@ -124,6 +124,6 @@ You may also be interested in the gesture recognition dataset and the following 
   }
 ```
 
-### Related Repos
+## Related Repos
 
 - [cross_domain_gesture_dataset](https://github.com/DI-HGR/cross_domain_gesture_dataset)
