@@ -1,7 +1,6 @@
 images/temp/
 
 images/temp.py
-HIBERTools/rfmask_loader.py
 test*.py
 
 occlusion.py
