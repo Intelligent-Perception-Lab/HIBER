@@ -12,6 +12,10 @@ HIBER(Human Indoor Behavior Exclusive RF dataset) is an open-source mmWave human
 - **3 occlusions**：styrofoam occlusion, carton occlusion and yoga mat occlusion.
 - **3 types of annotations**: 2D/3D human pose indicating human actions, bounding boxes showing human positions and human silhouette results
 
+## Data format and HIBERTools
+
+See [HIBERTools](HIBERTools) for detailed data format introduction and HIBERTools tutorial.
+
 ## Dataset Implementation
 
 ### Hardware Configuration
