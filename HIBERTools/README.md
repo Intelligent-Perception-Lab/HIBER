@@ -176,6 +176,7 @@ with env.begin(write=False) as txn:
     data_item = []
     for k in key:
         buf = txn.get(k.encode('ascii'))
+        # the dtype of silhouette label is bool, others are float64
         if k.startswith('m'):
             data = np.frombuffer(buf, dtype=bool)
         else:
