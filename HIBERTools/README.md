@@ -97,7 +97,7 @@ Train, val and test subset of HIBER all have the same file structure as follows.
 
 ## Install
 ```text
-pip install git+https://github.com/wuzhiwyyx/HIBER.git#subdirectory=HIBERTools
+pip install git+https://github.com/wuzhiwyyx/HIBER.git@package#subdirectory=HIBERTools
 ```
 
 ## Usage
