@@ -107,12 +107,33 @@ pip install git+https://github.com/wuzhiwyyx/HIBER.git@main#subdirectory=HIBERTo
 import HIBERTools as hiber
 
 root_path = '/data/hiber'
-dataset = hiber.HIBERDataset(root_path, subsets=['WALK'])
+dataset = hiber.HIBERDataset(root_path, subsets=['WALK'], mode='train')
 
 info = dataset.info()
 print(info)
 ```
-You will get the results
+You will get the following results, which indicating **current ( train / val / test )** dataset information:
+```text
+TRAIN subset of HIBER set.
+482 groups, 284380 samples in total.
+
+Detailed information is as follows.
+{
+    "WALK": 99,
+    "MULTI": 91,
+    "ACTION": 100,
+    "OCCLUSION": 192,
+    "DARK": 0
+}
+
+You can save to lmdb format by calling datastobj.save_as_lmdb function.
+```
+You can get complete information of **HIBER Dataset** by:
+```py
+complete_info = dataset.complete_info()
+print(complete_info)
+```
+The output will be:
 ```text
 HIBERDataset statistic info:
 
@@ -141,6 +162,34 @@ If you want to know precise group list of each detailed categories, please acces
     "dark_multi": 12,
     "dark_light_change": 7
 }
+
+Train/Validation/Test set are splited as follows.
+Train set
+{
+    "WALK": 99,
+    "MULTI": 91,
+    "ACTION": 100,
+    "OCCLUSION": 192,
+    "DARK": 0
+}
+
+Validation set
+{
+    "WALK": 26,
+    "MULTI": 14,
+    "ACTION": 21,
+    "OCCLUSION": 26,
+    "DARK": 0
+}
+
+Test set
+{
+    "WALK": 27,
+    "MULTI": 15,
+    "ACTION": 22,
+    "OCCLUSION": 26,
+    "DARK": 31
+}
 ```
 
 ### 2. Visualize data
@@ -162,7 +211,7 @@ hiber.visualize(data_item)
 ### 3. Save as LMDB
 
 ```py
-dataset.save_as_lmdb('hiber.lmdb')
+dataset.save_as_lmdb('hiber_train.lmdb')
 ```
 
 ### 4. Load from LMDB
@@ -170,7 +219,7 @@ dataset.save_as_lmdb('hiber.lmdb')
 ```py
 keys = dataset.get_lmdb_keys()
 
-env = lmdb.open('hiber.lmdb', readonly=True, lock=False, readahead=False, meminit=False)
+env = lmdb.open('hiber_train.lmdb', readonly=True, lock=False, readahead=False, meminit=False)
 with env.begin(write=False) as txn:
     key = keys[0]
     data_item = []
