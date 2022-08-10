@@ -25,3 +25,4 @@ test*
 
 *lmdb*
 HIBERTools/HIBERTools/__pycache__
+temp/*
