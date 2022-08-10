@@ -128,6 +128,7 @@ Detailed information is as follows.
 
 You can save to lmdb format by calling datastobj.save_as_lmdb function.
 ```
+
 You can get complete information of **HIBER Dataset** by:
 ```py
 complete_info = dataset.complete_info()
@@ -191,6 +192,8 @@ Test set
     "DARK": 31
 }
 ```
+
+>Note: Both **test** and **validation** set contain **new environment** and **new persons** which are not present in **Train** set. And **DARK** category is included in test set only.
 
 ### 2. Visualize data
 
