@@ -1,6 +1,6 @@
 # HIBERTools
 
->This is a toolbox of reading, loading and visualizing HIBER dataset. We also provide tools to generate lmdb format for fast training.
+>This is a toolbox of loading and visualizing HIBER dataset. We also provide tool functions to generate lmdb format files for fast training.
 
 ## Dataset File Structure
 
@@ -206,7 +206,7 @@ hiber.visualize(data_item, 'result.jpg')
 ```
 You will get the visualized result saved as result.jpg in current folder. 
 ![Visualize data](../images/vis_data.jpg)
-Or you can plot the results directly by not passing output file name.
+Or you can plot the results directly by omitting output file name.
 ```py
 hiber.visualize(data_item)
 ```
