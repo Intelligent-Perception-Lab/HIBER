@@ -1,6 +1,6 @@
 # HIBERTools
 
->This is a toolbox of reading, loading and visualizing HIBER dataset. We also provide tools to generate lmdb format for fast training.
+>This is a toolbox of loading and visualizing HIBER dataset. We also provide tool functions to generate lmdb format files for fast training.
 
 ## Dataset File Structure
 
@@ -102,17 +102,35 @@ pip install git+https://github.com/wuzhiwyyx/HIBER.git@main#subdirectory=HIBERTo
 
 ## Usage
 
-### Create dataset object and demonstrate statistics
+### 1. Create dataset object and show statistics
 ```py
 import HIBERTools as hiber
 
 root_path = '/data/hiber'
-dataset = hiber.HIBERDataset(root_path, subsets=['WALK'])
+dataset = hiber.HIBERDataset(root_path, categories=['WALK'], mode='train')
 
 info = dataset.info()
 print(info)
 ```
-You will get the results
+You will get the following results, which indicating **current ( train / val / test )** dataset information:
+```text
+TRAIN subset of HIBER Dataset.
+99 groups, 58410 samples in total.
+
+Detailed information is as follows.
+{
+    "WALK": 99
+}
+
+You can save to lmdb format by calling datastobj.save_as_lmdb function.
+```
+
+You can get complete information of **HIBER Dataset** by:
+```py
+complete_info = dataset.complete_info()
+print(complete_info)
+```
+The output will be:
 ```text
 HIBERDataset statistic info:
 
@@ -141,9 +159,39 @@ If you want to know precise group list of each detailed categories, please acces
     "dark_multi": 12,
     "dark_light_change": 7
 }
+
+Train/Validation/Test set are splited as follows.
+Train set
+{
+    "WALK": 99,
+    "MULTI": 91,
+    "ACTION": 100,
+    "OCCLUSION": 192,
+    "DARK": 0
+}
+
+Validation set
+{
+    "WALK": 26,
+    "MULTI": 14,
+    "ACTION": 21,
+    "OCCLUSION": 26,
+    "DARK": 0
+}
+
+Test set
+{
+    "WALK": 27,
+    "MULTI": 15,
+    "ACTION": 22,
+    "OCCLUSION": 26,
+    "DARK": 31
+}
 ```
 
-### Visualize data
+>Note: Both **test** and **validation** set contain **new environment** and **new persons** which are not present in **train** set. And **DARK** category is included in test set only.
+
+### 2. Visualize data
 
 ```text
 import random
@@ -151,26 +199,37 @@ import random
 seq = random.randint(0, len(dataset) - 1)
 data_item = dataset[seq]
 hiber.visualize(data_item, 'result.jpg')
+
 ```
-You will get the visualized result saved in result.jpg in current folder. 
+You will get the visualized result saved as result.jpg in current folder. 
 ![Visualize data](../images/vis_data.jpg)
-Or you can plot the results directly by not passing output file name.
+Or you can plot the results directly by omitting output file name.
 ```py
 hiber.visualize(data_item)
 ```
-
-### Save as LMDB
-
+the meaning of data_item is as follows
 ```py
-dataset.save_as_lmdb('hiber.lmdb')
+data_item[0] # horizontal heatmaps of shape (160, 200, 2), numpy.ndarray, float64
+data_item[1] # vertical heatmaps of shape (160, 200, 2), numpy.ndarray, float64
+data_item[2] # pose2d of shape (num_of_person, 14, 2), numpy.ndarray, float64
+data_item[3] # pose3d of shape (num_of_person, 14, 3), numpy.ndarray, float64
+data_item[4] # horizontal boundingbox of shape (num_of_person, 4), numpy.ndarray, float64
+data_item[5] # vertical boundingbox of shape (num_of_person, 4), numpy.ndarray, float64
+data_item[6] # silhouette of shape (num_of_person, 1248, 1640), numpy.ndarray, bool
 ```
 
-### Load from LMDB
+### 3. Save as LMDB
+
+```py
+dataset.save_as_lmdb('hiber_train.lmdb')
+```
+
+### 4. Load from LMDB
 
 ```py
 keys = dataset.get_lmdb_keys()
 
-env = lmdb.open('hiber.lmdb', readonly=True, lock=False, readahead=False, meminit=False)
+env = lmdb.open('hiber_train.lmdb', readonly=True, lock=False, readahead=False, meminit=False)
 with env.begin(write=False) as txn:
     key = keys[0]
     data_item = []

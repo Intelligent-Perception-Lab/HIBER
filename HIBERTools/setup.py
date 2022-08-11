@@ -13,7 +13,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='HIBERTools',
-    version='1.0.0',
+    version='2.1.0',
     author='Zhi Wu',
     author_email='wzwyyx@mail.ustc.edu.cn',
     description='Tools of HIBER Dataset',
