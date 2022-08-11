@@ -25,3 +25,4 @@ box_GT_multi.py
 
 *lmdb*
 HIBERTools/HIBERTools/__pycache__
+temp/tools_debug.py
