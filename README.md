@@ -40,7 +40,7 @@ Under these settings the radar achieves a frame rate of **20 fps**, and a range 
 ![raspberry pi](images/pi.jpg)
 
 - All 12 Cameras are calibrated using [Zhang's Algorithm](https://dl.acm.org/doi/10.1109/34.888718) to calculate 3D human skeletons precisely. Specifically, we adopt [kalibr](https://github.com/ethz-asl/kalibr) in our implementation.
-- The frame rate of Optical cameras is set to **10 FPS**, and the resolution of captured images is **1640 x 1248** (width x height). 
+- The frame rate of Optical cameras is set to **10 fps**, and the resolution of captured images is **1640 x 1248** (width x height). 
 
 ### Data Capture
 
