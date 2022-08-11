@@ -107,7 +107,7 @@ pip install git+https://github.com/wuzhiwyyx/HIBER.git@main#subdirectory=HIBERTo
 import HIBERTools as hiber
 
 root_path = '/data/hiber'
-dataset = hiber.HIBERDataset(root_path, subsets=['WALK'], mode='train')
+dataset = hiber.HIBERDataset(root_path, categories=['WALK'], mode='train')
 
 info = dataset.info()
 print(info)
@@ -115,15 +115,11 @@ print(info)
 You will get the following results, which indicating **current ( train / val / test )** dataset information:
 ```text
 TRAIN subset of HIBER Dataset.
-482 groups, 284380 samples in total.
+99 groups, 58410 samples in total.
 
 Detailed information is as follows.
 {
-    "WALK": 99,
-    "MULTI": 91,
-    "ACTION": 100,
-    "OCCLUSION": 192,
-    "DARK": 0
+    "WALK": 99
 }
 
 You can save to lmdb format by calling datastobj.save_as_lmdb function.
@@ -203,12 +199,23 @@ import random
 seq = random.randint(0, len(dataset) - 1)
 data_item = dataset[seq]
 hiber.visualize(data_item, 'result.jpg')
+
 ```
 You will get the visualized result saved as result.jpg in current folder. 
 ![Visualize data](../images/vis_data.jpg)
 Or you can plot the results directly by omitting output file name.
 ```py
 hiber.visualize(data_item)
+```
+the meaning of data_item is as follows
+```py
+data_item[0] # horizontal heatmaps of shape (160, 200, 2), numpy.ndarray, float64
+data_item[1] # vertical heatmaps of shape (160, 200, 2), numpy.ndarray, float64
+data_item[2] # pose2d of shape (num_of_person, 14, 2), numpy.ndarray, float64
+data_item[3] # pose3d of shape (num_of_person, 14, 3), numpy.ndarray, float64
+data_item[4] # horizontal boundingbox of shape (num_of_person, 4), numpy.ndarray, float64
+data_item[5] # vertical boundingbox of shape (num_of_person, 4), numpy.ndarray, float64
+data_item[6] # silhouette of shape (num_of_person, 1248, 1640), numpy.ndarray, bool
 ```
 
 ### 3. Save as LMDB

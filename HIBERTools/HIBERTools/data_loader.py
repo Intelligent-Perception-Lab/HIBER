@@ -17,21 +17,21 @@ from tqdm import tqdm
 class HIBERDataset():
     """HIBER dataset load and visualize object"""
 
-    def __init__(self, root, subsets=['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'], 
+    def __init__(self, root, categories=['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'], 
                     mode='train') -> None:
         """HIBERDataset constructor.
 
         Args:
             root (str): Root path of HIBER dataset directory.
-            subsets (list[str], optional): Subsets to be processed. Defaults to ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'].
+            categories (list[str], optional): Categories to be processed. Defaults to ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'].
             mode (str): Train/Validation/Test set, candidate values are ['train', 'val', 'test']. Defaults to 'train'
         """
         super().__init__()
-        self.subsets = ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']
-        assert set(subsets) <= set(self.subsets), \
+        self.categories = ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']
+        assert set(categories) <= set(self.categories), \
             "subsets should in ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']" 
         self.root = root
-        self.chosen_subsets = subsets
+        self.chosen_cates = categories
         self.fpg = 590 # number of frames per group
         assert mode in ['train', 'val', 'test'], 'invalid dataset mode'
         self.mode = mode
@@ -214,7 +214,11 @@ class HIBERDataset():
         self.__train_set__ = train_set
         self.__test_set__ = test_set
         self.__val_set__ = val_set
-        self.__datas__ = eval(mode + '_set')
+        __datas__ = {}
+        for k, v  in eval(mode + '_set').items():
+            if k in self.chosen_cates:
+                __datas__[k] = v
+        self.__datas__ = __datas__
 
     def info(self):
         """Display current HIBER dataset information.
@@ -231,7 +235,8 @@ class HIBERDataset():
         ]
         dataset = {}
         for k, v in self.__datas__.items():
-            dataset[k] = len(v)
+            if k in self.chosen_cates:
+                dataset[k] = len(v)
 
         dataset_info = json.dumps(dataset, indent=4)
         info = '\n'.join([*heads[:-1], dataset_info, heads[-1]])
@@ -293,7 +298,7 @@ class HIBERDataset():
         """
         datas = []
         cates = []
-        for k in self.chosen_subsets:
+        for k in self.chosen_cates:
             datas.extend(self.__datas__[k])
             cates.extend([k[0]] * len(self.__datas__[k]) * self.fpg)
         cates = ''.join(cates)
@@ -303,7 +308,7 @@ class HIBERDataset():
         return datas, cates
             
     def __len__(self):
-        return sum([len(self.__datas__[k]) for k in self.chosen_subsets]) * self.fpg
+        return sum([len(self.__datas__[k]) for k in self.chosen_cates]) * self.fpg
 
     def __getitem__(self, index):
         """Load data item and corresponding annotations.
