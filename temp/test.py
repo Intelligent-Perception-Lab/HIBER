@@ -2,7 +2,7 @@ from ast import walk
 from cgi import test
 import sys
 sys.path.append('.')
-import HIBERTools as hiber
+import HIBERTools.HIBERTools as hiber
 import numpy as np
 import os
 from tqdm import tqdm
@@ -99,3 +99,5 @@ def move_or_split_dataset(data, in_prefix, out_prefix):
     os.system(cmd)
 
 move_or_split_dataset(dataset.__train_set__, in_prefix, train_prefix)
+move_or_split_dataset(dataset.__val_set__, in_prefix, val_prefix)
+move_or_split_dataset(dataset.__test_set__, in_prefix, test_prefix)
