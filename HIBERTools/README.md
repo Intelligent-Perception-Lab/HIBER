@@ -114,7 +114,7 @@ print(info)
 ```
 You will get the following results, which indicating **current ( train / val / test )** dataset information:
 ```text
-TRAIN subset of HIBER set.
+TRAIN subset of HIBER Dataset.
 482 groups, 284380 samples in total.
 
 Detailed information is as follows.

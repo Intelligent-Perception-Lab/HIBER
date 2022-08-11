@@ -224,7 +224,7 @@ class HIBERDataset():
         """
         total_grps = sum([len(v) for k, v in self.__datas__.items()])
         heads = [
-            '%s subset of HIBER set.' % self.mode.upper(),
+            '%s subset of HIBER Dataset.' % self.mode.upper(),
             '%d groups, %d samples in total.\n' % (total_grps, total_grps * self.fpg),
             'Detailed information is as follows.',
             '\nYou can save to lmdb format by calling datastobj.save_as_lmdb function.'
