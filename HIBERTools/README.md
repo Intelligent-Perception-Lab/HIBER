@@ -12,7 +12,7 @@ Our HIBER dataset has 5 main categories collected in 10 different environment.
 - **OCCLUSION** : Single or multiple people walk randomly with three kind of occlusions (**styrofoam occlusion, carton occlusion and yoga mat occlusion**).
 - **WALK** : Single person walk randomly with normal light and no occlusions.
 
-Train, val and test subset of HIBER all have the same file structure as follows.
+All the train, val and test set of HIBER have the same file structure as follows.
 
 ```text
 .
