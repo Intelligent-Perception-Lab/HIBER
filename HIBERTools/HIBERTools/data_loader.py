@@ -29,7 +29,7 @@ class HIBERDataset():
         super().__init__()
         self.categories = ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']
         assert set(categories) <= set(self.categories), \
-            "subsets should in ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']" 
+            "categories should in ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']" 
         self.root = root
         self.chosen_cates = categories
         self.fpg = 590 # number of frames per group
@@ -323,7 +323,7 @@ class HIBERDataset():
             Tuple(np.ndarray, ..., np.ndarray): Data item and corresponding annotations, [hor, ver, pose2d, pose3d, hbox, vbox, silhouette].
         """
         v, g, f = self.datas[index]
-        subset = [x for x in self.subsets if x.startswith(self.cates[index])][0]
+        subset = [x for x in self.categories if x.startswith(self.cates[index])][0]
         prefix = os.path.join(self.root, subset)
         hor = os.path.join(prefix, 'HORIZONTAL_HEATMAPS', '%02d_%02d' % (v, g), '%04d.npy' % f)
         ver = os.path.join(prefix, 'VERTICAL_HEATMAPS', '%02d_%02d' % (v, g), '%04d.npy' % f)
