@@ -41,6 +41,8 @@ def draw_keypoints(p_pr, line_pr, joints):
         line_pr (list): List of line2d object.
         joints (list): Keypoint relationship, each element denote parent keypoint index of current keypoint index.
     """
+    if p_pr.size == 0:
+        return
     for n, (i, j) in enumerate(joints):
         line_pr[n].set_color('g')
         line_pr[n].set_data_3d([p_pr[i, 0], p_pr[j, 0]], [p_pr[i, 1], p_pr[j, 1]], [p_pr[i, 2], p_pr[j, 2]])
@@ -82,6 +84,7 @@ def visualize(data_item, out=None):
         data_item (tuple): Data sample from HIBER Dataset.
         out (str, optional): Output image filename. Defaults to None.
     """
+    plt.ion()
     hor, ver, pose2d, pose3d, hbox, vbox, silhouette = data_item
     figure = plt.figure(figsize=(10, 2.5))
     axes = figure.subplots(1, 4)
@@ -106,7 +109,7 @@ def visualize(data_item, out=None):
         rect = Rectangle((x0, y0), x1 - x0, y1 - y0, linewidth=2, edgecolor='g', facecolor='none')
         axes[1].add_patch(rect)
 
-    silhouette = np.max(silhouette, axis=0)
+    silhouette = np.max(silhouette, axis=0) if silhouette.shape[0] != 0 else np.zeros((1248, 1640), dtype=bool)
     axes[2].imshow(silhouette)
     axes[2].set_title('Silhouette & 2D Pose', pad=23, fontsize=10)
     joints = [[0, 1], [1, 2], [1, 5], [2, 3], [3, 4], [5, 6], [6, 7], [8, 9], [9, 10], [11, 12], [12, 13], [1, 8], [1, 11]]
@@ -134,3 +137,4 @@ def visualize(data_item, out=None):
     else:
         plt.savefig(out)
     plt.close(figure)
+    plt.ioff()

@@ -8,6 +8,7 @@
 import glob
 import os
 import json
+from unicodedata import category
 import numpy as np
 from itertools import product
 import lmdb
@@ -323,19 +324,26 @@ class HIBERDataset():
             Tuple(np.ndarray, ..., np.ndarray): Data item and corresponding annotations, [hor, ver, pose2d, pose3d, hbox, vbox, silhouette].
         """
         v, g, f = self.datas[index]
-        subset = [x for x in self.categories if x.startswith(self.cates[index])][0]
-        prefix = os.path.join(self.root, subset)
+        category = [x for x in self.categories if x.startswith(self.cates[index])][0]
+        prefix = os.path.join(self.root, category)
         hor = os.path.join(prefix, 'HORIZONTAL_HEATMAPS', '%02d_%02d' % (v, g), '%04d.npy' % f)
         ver = os.path.join(prefix, 'VERTICAL_HEATMAPS', '%02d_%02d' % (v, g), '%04d.npy' % f)
-        anno_prefix = os.path.join(self.root, subset, 'ANNOTATIONS')
-        pose2d = os.path.join(anno_prefix, '2DPOSE', '%02d_%02d.npy' % (v, g))
-        pose3d = os.path.join(anno_prefix, '3DPOSE', '%02d_%02d.npy' % (v, g))
-        hbox = os.path.join(anno_prefix, 'BOUNDINGBOX', 'HORIZONTAL', '%02d_%02d.npy' % (v, g))
-        vbox = os.path.join(anno_prefix, 'BOUNDINGBOX', 'VERTICAL', '%02d_%02d.npy' % (v, g))
+        anno_prefix = os.path.join(self.root, category, 'ANNOTATIONS')
+        if category == 'DARK':
+            # category DARK has no pose and boundingbox annotations
+            pose2d = np.zeros((0, 14, 2))
+            pose3d = np.zeros((0, 14, 3))
+            hbox = np.zeros((0, 4))
+            vbox = np.zeros((0, 4))
+        else:
+            pose2d = os.path.join(anno_prefix, '2DPOSE', '%02d_%02d.npy' % (v, g))
+            pose3d = os.path.join(anno_prefix, '3DPOSE', '%02d_%02d.npy' % (v, g))
+            hbox = os.path.join(anno_prefix, 'BOUNDINGBOX', 'HORIZONTAL', '%02d_%02d.npy' % (v, g))
+            vbox = os.path.join(anno_prefix, 'BOUNDINGBOX', 'VERTICAL', '%02d_%02d.npy' % (v, g))
+            pose2d, pose3d = np.load(pose2d)[f], np.load(pose3d)[f]
+            hbox, vbox = np.load(hbox)[f], np.load(vbox)[f]
         silhouette = os.path.join(anno_prefix, 'SILHOUETTE', '%02d_%02d' % (v, g), '%04d.npy' % f)
         hor, ver = np.load(hor), np.load(ver)
-        pose2d, pose3d = np.load(pose2d)[f], np.load(pose3d)[f]
-        hbox, vbox = np.load(hbox)[f], np.load(vbox)[f]
         silhouette = np.load(silhouette)
         return hor, ver, pose2d, pose3d, hbox, vbox, silhouette
 
