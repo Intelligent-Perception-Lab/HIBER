@@ -117,12 +117,19 @@ print(info)
 dataset = hiber.HIBERDataset(root_path, categories=['WALK'], mode='train', data_file='PATH/TO/YOUR/CUSTOMIZED/JSON/FILE') # create train dataset using your customized JSON format file
 
 # Your JSON file should be like as follows.
-# { 'Train': {'WALK': ['07_01', '05_02'],
-# 'MULTI': []},
-#'Val': {'WALK': ['07_05', '05_09'],
-# 'MULTI': []},
-#'Test': {'WALK': ['07_03', '05_04'],
-# 'MULTI': []},
+# {
+#     'Train': {
+#         'WALK': ['07_01', '05_02'],
+#         'MULTI': []
+#     },
+#     'Val': {
+#         'WALK': ['07_05', '05_09'],
+#         'MULTI': []
+#     },
+#     'Test': {
+#         'WALK': ['07_03', '05_04'],
+#         'MULTI': []
+#     }
 # }
 ```
 
