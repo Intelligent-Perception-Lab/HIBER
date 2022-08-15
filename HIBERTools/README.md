@@ -107,14 +107,17 @@ pip install git+https://github.com/wuzhiwyyx/HIBER.git@main#subdirectory=HIBERTo
 import HIBERTools as hiber
 
 root_path = '/data/hiber'
-dataset = hiber.HIBERDataset(root_path, categories=['WALK'], mode='train') # create train dataset using the default data split strategy.
+# create train dataset using the default data split strategy.
+dataset = hiber.HIBERDataset(root_path, categories=['WALK'], mode='train') 
 
 info = dataset.info()
 print(info)
 ```
 >Note: We highly recommend that you use the default data split strategy. If you want to split the data customly, use the code below.
 ```py
-dataset = hiber.HIBERDataset(root_path, categories=['WALK'], mode='train', data_file='PATH/TO/YOUR/CUSTOMIZED/JSON/FILE') # create train dataset using your customized JSON format file
+# create train dataset using your customized JSON format file
+dataset = hiber.HIBERDataset(root_path, categories=['WALK'], mode='train', 
+                                data_file='PATH/TO/YOUR/CUSTOMIZED/JSON/FILE') 
 
 # Your JSON file should be like as follows.
 # {
