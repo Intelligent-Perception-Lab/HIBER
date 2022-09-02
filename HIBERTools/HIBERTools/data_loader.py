@@ -8,25 +8,25 @@
 import glob
 import os
 import json
-from unicodedata import category
 import numpy as np
-from itertools import product
 import lmdb
+from pathlib import Path
+from itertools import product
 from tqdm import tqdm
 
 
 class HIBERDataset():
     """HIBER dataset load and visualize object"""
 
-    def __init__(self, root, categories=['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'], 
+    def __init__(self, root=None, categories=['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'], 
                     mode='train', data_file=None) -> None:
         """HIBERDataset constructor.
 
         Args:
-            root (str): Root path of HIBER dataset directory.
+            root (str, optional): Root path of HIBER dataset directory. Defaults to None.
             categories (list[str], optional): Categories to be processed. Defaults to ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'].
-            mode (str): Train/Validation/Test set, candidate values are ['train', 'val', 'test']. Defaults to 'train'
-            data_file (str): the directory of custom dataset split file (JSON format).
+            mode (str, optional): Train/Validation/Test set, candidate values are ['train', 'val', 'test']. Defaults to 'train'
+            data_file (str, optional): the directory of custom dataset split file (JSON format).
         """
         super().__init__()
         self.categories = ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']
@@ -40,6 +40,7 @@ class HIBERDataset():
         self.__statistics__(self.mode, data_file)
         self.datas, self.cates = self.__prepare_data__() # index of data items and categories
         self.total_keys = None # lmdb data keys
+        self.complex = False
 
     def __statistics__(self, mode, data_file=None):
         """HIBERDataset statistics information, containing group lists of each subset and group lists of detailed subcategories.
@@ -330,12 +331,34 @@ class HIBERDataset():
         Returns:
             Tuple(np.ndarray, ..., np.ndarray): Data item and corresponding annotations, [hor, ver, pose2d, pose3d, hbox, vbox, silhouette].
         """
+        assert not self.root is None, 'You do not pass "root" parameter to HIBERDataset object.'
+        
         v, g, f = self.datas[index]
-        category = [x for x in self.categories if x.startswith(self.cates[index])][0]
-        prefix = os.path.join(self.root, category)
-        hor = os.path.join(prefix, 'HORIZONTAL_HEATMAPS', '%02d_%02d' % (v, g), '%04d.npy' % f)
-        ver = os.path.join(prefix, 'VERTICAL_HEATMAPS', '%02d_%02d' % (v, g), '%04d.npy' % f)
-        anno_prefix = os.path.join(self.root, category, 'ANNOTATIONS')
+        categories = {
+            'A': 'ACTION',
+            'W': 'WALK',
+            'M': 'MULTI',
+            'O': 'OCCLUSION',
+            'D': 'DARK'
+        }
+        category = categories[self.cates[index]]
+        prefix = Path(self.root) / category
+
+        if self.complex:
+            hor = prefix / 'HORIZONTAL_HEATMAPS_COMPLEX' / f'{v:02d}_{g:02d}' / f'{f:04d}.npy'
+            ver = prefix / 'VERTICAL_HEATMAPS_COMPLEX' / f'{v:02d}_{g:02d}' / f'{f:04d}.npy'
+
+            assert hor.exists() and ver.exists(), 'Complex files does not exists.'
+
+            hor = hor.view(dtype=np.complex128).squeeze()
+            ver = ver.view(dtype=np.complex128).squeeze()
+        else:
+            hor = prefix / 'HORIZONTAL_HEATMAPS' / f'{v:02d}_{g:02d}' / f'{f:04d}.npy'
+            ver = prefix / 'VERTICAL_HEATMAPS' / f'{v:02d}_{g:02d}' / f'{f:04d}.npy'
+            hor, ver = np.load(hor), np.load(ver)
+        
+        anno_prefix = prefix / 'ANNOTATIONS'
+
         if category == 'DARK':
             # category DARK has no pose and boundingbox annotations
             pose2d = np.zeros((0, 14, 2))
@@ -343,24 +366,26 @@ class HIBERDataset():
             hbox = np.zeros((0, 4))
             vbox = np.zeros((0, 4))
         else:
-            pose2d = os.path.join(anno_prefix, '2DPOSE', '%02d_%02d.npy' % (v, g))
-            pose3d = os.path.join(anno_prefix, '3DPOSE', '%02d_%02d.npy' % (v, g))
-            hbox = os.path.join(anno_prefix, 'BOUNDINGBOX', 'HORIZONTAL', '%02d_%02d.npy' % (v, g))
-            vbox = os.path.join(anno_prefix, 'BOUNDINGBOX', 'VERTICAL', '%02d_%02d.npy' % (v, g))
+            pose2d = anno_prefix / '2DPOSE' / f'{v:02d}_{g:02d}.npy'
+            pose3d = anno_prefix / '3DPOSE' / f'{v:02d}_{g:02d}.npy'
+            hbox = anno_prefix / 'BOUNDINGBOX/HORIZONTAL' / f'{v:02d}_{g:02d}.npy'
+            vbox = anno_prefix / 'BOUNDINGBOX/VERTICAL' / f'{v:02d}_{g:02d}.npy'
             pose2d, pose3d = np.load(pose2d)[f], np.load(pose3d)[f]
             hbox, vbox = np.load(hbox)[f], np.load(vbox)[f]
-        silhouette = os.path.join(anno_prefix, 'SILHOUETTE', '%02d_%02d' % (v, g), '%04d.npy' % f)
-        hor, ver = np.load(hor), np.load(ver)
+        silhouette = anno_prefix / 'SILHOUETTE' / f'{v:02d}_{g:02d}' / f'{f:04d}.npy'
         silhouette = np.load(silhouette)
         return hor, ver, pose2d, pose3d, hbox, vbox, silhouette
 
-    def save_as_lmdb(self, out_path):
+    def save_as_lmdb(self, out_path, complex=False):
         """Save dataset as lmdb format.
 
         Args:
             out_path (str): Ouput file path.
         """
+        assert not self.root is None, 'You do not pass "root" parameter to HIBERDataset object.'
         assert self.__len__() != 0, 'At least one subset should be assigned.'
+        self.complex = complex
+
         data_item = self.__getitem__(0)
         total_samples = self.__len__()
 

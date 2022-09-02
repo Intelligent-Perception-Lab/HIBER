@@ -108,7 +108,11 @@ import HIBERTools as hiber
 
 root_path = '/data/hiber'
 # create train dataset using the default data split strategy.
-dataset = hiber.HIBERDataset(root_path, categories=['WALK'], mode='train') 
+dataset = hiber.HIBERDataset(root=root_path, categories=['WALK'], mode='train') 
+
+# If you only want to check dataset information, instead of load/visualize/save data. 
+# You can leave 'root' None.
+# dataset = hiber.HIBERDataset(categories=['WALK'], mode='train') 
 
 info = dataset.info()
 print(info)
