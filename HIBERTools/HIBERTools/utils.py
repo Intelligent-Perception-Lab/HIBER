@@ -91,7 +91,17 @@ def visualize(data_item, out=None):
     # figure.tight_layout()
     figure.subplots_adjust(0.01, -0.10, 0.99, 0.99, 0, 0)
 
-    hor, ver = hor[:, :, 0], ver[:, :, 0]
+    # If RF frame is not channel_first, transpose it to channel_first
+    if hor.shape[-2] == 2:
+        hor, ver = hor.transpose((2, 0, 1)), ver.transpose((2, 0, 1))
+        hor, ver = np.ascontiguousarray(hor), np.ascontiguousarray(ver)
+
+    # If RF frame is complex, use its real value when visualize.
+    if hor.dtype == np.complex128:
+        hor, ver = np.abs(hor), np.abs(ver)
+        
+    hor, ver = hor[0], ver[0]
+
     axes[0].imshow(hor)
     axes[0].set_title('Horizontal Heatmap', pad=19.5, fontsize=10)
     axes[1].imshow(ver)

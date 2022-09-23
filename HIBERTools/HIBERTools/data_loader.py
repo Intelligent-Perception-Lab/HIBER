@@ -19,14 +19,18 @@ class HIBERDataset():
     """HIBER dataset load and visualize object"""
 
     def __init__(self, root=None, categories=['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'], 
-                    mode='train', data_file=None) -> None:
+                    mode='train', data_file=None, channel_first=True, complex=False) -> None:
         """HIBERDataset constructor.
 
         Args:
             root (str, optional): Root path of HIBER dataset directory. Defaults to None.
             categories (list[str], optional): Categories to be processed. Defaults to ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK'].
             mode (str, optional): Train/Validation/Test set, candidate values are ['train', 'val', 'test']. Defaults to 'train'
-            data_file (str, optional): the directory of custom dataset split file (JSON format).
+            data_file (str, optional): The directory of custom dataset split file (JSON format).
+            channel_first (bool, optional): If true the radar frame shape will be (2, 160, 200), else (160, 200, 2). 
+                                            This is determined by downloaded dataset file version. Defaults to 'True'.
+            complex (bool, optional): If true, complex radar frame will be loaded and saved, 
+                                            else real radar frame will be loaded and saved. Defaults to 'False'
         """
         super().__init__()
         self.categories = ['ACTION', 'DARK', 'MULTI', 'OCCLUSION', 'WALK']
@@ -40,7 +44,8 @@ class HIBERDataset():
         self.__statistics__(self.mode, data_file)
         self.datas, self.cates = self.__prepare_data__() # index of data items and categories
         self.total_keys = None # lmdb data keys
-        self.complex = False
+        self.channel_first = channel_first
+        self.complex = complex
 
     def __statistics__(self, mode, data_file=None):
         """HIBERDataset statistics information, containing group lists of each subset and group lists of detailed subcategories.
@@ -350,13 +355,23 @@ class HIBERDataset():
 
             assert hor.exists() and ver.exists(), 'Complex files does not exists.'
 
-            hor = hor.view(dtype=np.complex128).squeeze()
-            ver = ver.view(dtype=np.complex128).squeeze()
+            # hor = hor.view(dtype=np.complex128).squeeze()
+            # ver = ver.view(dtype=np.complex128).squeeze()
         else:
             hor = prefix / 'HORIZONTAL_HEATMAPS' / f'{v:02d}_{g:02d}' / f'{f:04d}.npy'
             ver = prefix / 'VERTICAL_HEATMAPS' / f'{v:02d}_{g:02d}' / f'{f:04d}.npy'
-            hor, ver = np.load(hor), np.load(ver)
+
+        hor, ver = np.load(hor), np.load(ver)
+
+        if self.channel_first and hor.shape[0] != 2:
+            print(f'Expected RF frame is (2, 160, 200), but got {hor.shape}, please maybe you should channel_first=False')
+        elif not self.channel_first and hor.shape[-1] != 2:
+            print(f'Expected RF frame is (160, 200, 2), but got {hor.shape}, please maybe you should channel_first=True')
         
+        if hor.shape[-2] == 2:
+            hor, ver = hor.transpose((2, 0, 1)), ver.transpose((2, 0, 1))
+            hor, ver = np.ascontiguousarray(hor), np.ascontiguousarray(ver)
+
         anno_prefix = prefix / 'ANNOTATIONS'
 
         if category == 'DARK':
@@ -376,7 +391,7 @@ class HIBERDataset():
         silhouette = np.load(silhouette)
         return hor, ver, pose2d, pose3d, hbox, vbox, silhouette
 
-    def save_as_lmdb(self, out_path, complex=False):
+    def save_as_lmdb(self, out_path, complex=None):
         """Save dataset as lmdb format.
 
         Args:
@@ -384,7 +399,8 @@ class HIBERDataset():
         """
         assert not self.root is None, 'You do not pass "root" parameter to HIBERDataset object.'
         assert self.__len__() != 0, 'At least one subset should be assigned.'
-        self.complex = complex
+        if not complex is None:
+            self.complex = complex
 
         data_item = self.__getitem__(0)
         total_samples = self.__len__()
