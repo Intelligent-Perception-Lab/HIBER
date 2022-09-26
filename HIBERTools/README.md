@@ -281,6 +281,8 @@ with env.begin(write=False) as txn:
         # the dtype of silhouette label is bool, others are float64
         if k.startswith('m'):
             data = np.frombuffer(buf, dtype=bool)
+        elif dataset.complex and k.startswith(('h_', 'v_')):
+            data = np.frombuffer(buf, dtype=np.complex128)
         else:
             data = np.frombuffer(buf, dtype=np.float64)
         data_item.append(data)
