@@ -83,7 +83,11 @@ See [HIBERTools](HIBERTools) for detailed data format introduction and HIBERTool
 
 ## How to access the HIBER dataset
 
-To obtain the dataset, please sign the [agreement](agreement.pdf) which should be stamped with the official seal of your institution, then scan and send it to wzwyyx@mail.ustc.edu.cn. Then you will receive a notification email that includes the download links of the dataset within seven days.
+To obtain the dataset, please sign the [agreement](agreement.pdf). 
+- If you are a researcher from China, please ensure that the agreement is stamped with the official seal of your institution.
+- If you are not from China, please ask your director or team leader to sign the agreement.
+
+ Once stamped/signed, you can scan and send it to wzwyyx@mail.ustc.edu.cn. Then you will receive a notification email that includes the download links of the dataset within seven days. Thank you for your cooperation.
 
 ## Citation
 
