@@ -83,7 +83,8 @@ See [HIBERTools](HIBERTools) for detailed data format introduction and HIBERTool
 
 ## How to access the HIBER dataset
 
-To obtain the dataset, please sign the [agreement](agreement.pdf). 
+To obtain the dataset, please sign the [agreement](agreement.pdf) by yourself.
+And **additionally**: 
 - If you are a researcher from China, please ensure that the agreement is stamped with the official seal of your institution.
 - If you are not from China, please ask your director or team leader to sign the agreement.
 
