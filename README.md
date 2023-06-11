@@ -83,7 +83,7 @@ To obtain the dataset, please sign the [agreement](agreement.pdf) which should b
 
 ### Citation
 
-If you use this dataset, please cite the following papers [RFMask](https://ieeexplore.ieee.org/abstract/document/9793363) and [RFGAN](https://ieeexplore.ieee.org/abstract/document/9720242):
+If you use this dataset, please cite the following papers [RFMask](https://ieeexplore.ieee.org/abstract/document/9793363), [RFGAN](https://ieeexplore.ieee.org/abstract/document/9720242) and [RPM](https://ieeexplore.ieee.org/abstract/document/10105497):
 
 ```text
 @ARTICLE{9793363,
@@ -105,6 +105,14 @@ If you use this dataset, please cite the following papers [RFMask](https://ieeex
   number={},
   pages={1-1},
   doi={10.1109/TMM.2022.3153136}}
+
+@article{xie2023rpm,
+  title={RPM: RF-based Pose Machines},
+  author={Xie, Chunyang and Zhang, Dongheng and Wu, Zhi and Yu, Cong and Hu, Yang and Chen, Yan},
+  journal={IEEE Transactions on Multimedia},
+  year={2023},
+  publisher={IEEE}
+}
 ```
 
 You may also be interested in the gesture recognition dataset and the following paper [DIGesture](https://arxiv.org/abs/2111.06195):

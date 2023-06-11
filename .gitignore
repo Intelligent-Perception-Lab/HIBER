@@ -1,3 +1,7 @@
 images/temp/
 
 images/temp.py
+
+*.pyc
+
+.vscode
