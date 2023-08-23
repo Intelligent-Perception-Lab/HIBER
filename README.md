@@ -117,6 +117,16 @@ If you use this dataset, please cite the following papers [RFMask](https://ieeex
   year={2023},
   publisher={IEEE}
 }
+
+@ARTICLE{10155196,
+  author={Xie, Chunyang and Zhang, Dongheng and Wu, Zhi and Yu, Cong and Hu, Yang and Chen, Yan},
+  journal={IEEE Transactions on Circuits and Systems for Video Technology}, 
+  title={RPM 2.0: RF-based Pose Machines for Multi-Person 3D Pose Estimation}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/TCSVT.2023.3287329}}
 ```
 
 You may also be interested in the gesture recognition dataset and the following paper [DIGesture](https://arxiv.org/abs/2111.06195):
