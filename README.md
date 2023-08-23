@@ -92,7 +92,7 @@ And **additionally**:
 
 ## Citation
 
-If you use this dataset, please cite the following papers [RFMask](https://ieeexplore.ieee.org/abstract/document/9793363), [RFGAN](https://ieeexplore.ieee.org/abstract/document/9720242) and [RPM](https://ieeexplore.ieee.org/abstract/document/10105497):
+If you use this dataset, please cite the following papers [RFMask](https://ieeexplore.ieee.org/abstract/document/9793363), [RFGAN](https://ieeexplore.ieee.org/abstract/document/9720242), [RPM](https://ieeexplore.ieee.org/abstract/document/10105497) and [RPM2.0](https://ieeexplore.ieee.org/document/10155196):
 
 ```text
 @ARTICLE{9793363,
