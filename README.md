@@ -39,8 +39,8 @@ Under these settings the radar achieves a frame rate of **20 fps**, and a range 
 
 ![raspberry pi](images/pi.jpg)
 
-- All 12 Cameras are calibrated using [Zhang's Algorithm](https://arxiv.org/abs/1908.06539) to calculate 3D human skeletons precisely. Specifically, we adopt [kalibr](https://github.com/ethz-asl/kalibr) in our implementation.
-- The frame rate of Optical cameras is set to **10 FPS**, and the resolution of captured images is **1640 x 1248** (width x height). 
+- All 12 Cameras are calibrated using [Zhang's Algorithm](https://dl.acm.org/doi/10.1109/34.888718) to calculate 3D human skeletons precisely. Specifically, we adopt [kalibr](https://github.com/ethz-asl/kalibr) in our implementation.
+- The frame rate of Optical cameras is set to **10 fps**, and the resolution of captured images is **1640 x 1248** (width x height). 
 
 ### Data Capture
 
@@ -77,11 +77,15 @@ The following figure shows the statistical result of our HIBER dataset. Our data
     <img src='images/statistic.jpg', height=400px>
 </div>
 
-### How to access the HIBER dataset
+## Data format and HIBERTools
+
+See [HIBERTools](HIBERTools) for detailed data format introduction and HIBERTools tutorial.
+
+## How to access the HIBER dataset
 
 To obtain the dataset, please sign the [agreement](agreement.pdf) which should be stamped with the official seal of your institution, then scan and send it to wzwyyx@mail.ustc.edu.cn. Then you will receive a notification email that includes the download links of the dataset within seven days.
 
-### Citation
+## Citation
 
 If you use this dataset, please cite the following papers [RFMask](https://ieeexplore.ieee.org/abstract/document/9793363), [RFGAN](https://ieeexplore.ieee.org/abstract/document/9720242) and [RPM](https://ieeexplore.ieee.org/abstract/document/10105497):
 
@@ -128,6 +132,6 @@ You may also be interested in the gesture recognition dataset and the following 
   }
 ```
 
-### Related Repos
+## Related Repos
 
 - [cross_domain_gesture_dataset](https://github.com/DI-HGR/cross_domain_gesture_dataset)

@@ -1,7 +1,29 @@
 images/temp/
 
 images/temp.py
+test*.py
 
-*.pyc
+occlusion.py
+
+Regenerate
+
+box_GT_multi.py
+change_view*.py
+chunyang_keypoints.py
+cmp.png
+corrected.jpg
+frame.jpg
+place_3dpose.py
+place_box.py
+rectify_pose.py
+rectify.jpg
+rotate_radar.py
+temp*
+test*
 
 .vscode
+
+*lmdb*
+HIBERTools/HIBERTools/__pycache__
+temp/*
+*.pyc
