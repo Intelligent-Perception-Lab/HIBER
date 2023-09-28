@@ -97,8 +97,11 @@ All the train, val and test set of HIBER have the same file structure as follows
 >All annotation has `dtype=np.float64`, except the complex version of RF heatmaps which has `dtype=np.complex128` and will be public in the future.
 
 ## Install
-```text
+<!-- ```text
 pip install git+https://github.com/wuzhiwyyx/HIBER.git@main#subdirectory=HIBERTools
+``` -->
+```text
+pip install git+https://github.com/wuzhiwyyx/HIBER.git#subdirectory=HIBERTools
 ```
 
 ## Usage
